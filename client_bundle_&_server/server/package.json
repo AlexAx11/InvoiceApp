@@ -1,0 +1,18 @@
+{
+  "name": "volt-junior-react-dev-boilerplate1",
+  "version": "1.0.0",
+  "description": "storage: 'c/users/alex/documents/programming/sqlite/volt.db'\r remove package.json\r npm init\r npm install express sequelize\r npm i sqlite3\r npm install cors --save",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "sequelize": "^6.32.1",
+    "sqlite3": "^5.1.6"
+  }
+}

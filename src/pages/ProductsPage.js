@@ -55,6 +55,7 @@ const ProductsPage = observer(() => {
 
    //save deleting prod data for information page
    const removeProduct = (prod) => {
+        handleShowDelete()
         setDelProdName(prod.name)
         setDelProdId(prod.id)
    }
@@ -97,7 +98,8 @@ const ProductsPage = observer(() => {
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <Form.Label>Price</Form.Label>
                                 <Form.Control
-                                    type="text"
+                                    type="number"
+                                    min="0"
                                     value={price}
                                     onChange={e => {setPrice(e.target.value)}}
                                     required
@@ -135,7 +137,7 @@ const ProductsPage = observer(() => {
                             <td>{prod.name}</td>
                             <td>{prod.price}</td>
                             <td width='7%'><Button variant="btn btn-dark" size='sm' 
-                            onClick={() => {removeProduct(prod); handleShowDelete()}}>Delete</Button></td>
+                            onClick={() => {removeProduct(prod)}}>Delete</Button></td>
                         </tr>
                     )}
                 </tbody>

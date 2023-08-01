@@ -75,17 +75,19 @@ const InvoicesPage = observer(() => {
 
    //save deleting invoice data for information page
    const removeInvoice = (inv) => {
+        handleShowDelete()
         setDelInvoiceId(inv.invoice_id)
    }
 
    //delete invoice
    const deleteInvoiceFn = () => {
         deleteInvoice(delInvoiceId)
-        //reload page
-        setSelector(!selector)
+        fetchInvoices().then(data => invoices.setInvoices(data))
         //clear all temporary fields
         setDelInvoiceId('')
         setShowDelInvoice(!showDelInvoice)
+        //reload page
+        setSelector(!selector)
    } 
     
    const getInvoice = (invoice_id) => {
@@ -173,7 +175,7 @@ const InvoicesPage = observer(() => {
                                 }
                             </td>
                             <td width='7%'><Button variant="btn btn-dark" size='sm' 
-                            onClick={() => {removeInvoice(data); handleShowDelete()}}>Delete</Button></td>
+                            onClick={() => {removeInvoice(data)}}>Delete</Button></td>
                         </tr>
                     )}
                 </tbody>

@@ -4,13 +4,25 @@ run:
 
 1. start server side (provided separately)
 
-npm install
+remove package.json
 
-all 'findById' change to 'findByPk'
+npm init
+
+npm install express sequelize
+
+npm i sqlite3
+
+npm install cors --save
+
+7 row: cors = require('cors');
+
+147 row: app.use(cors());
+
+295-330 row: remove
+
+change all findById to findByPk
 
 npm start
-
-http://localhost:8000
 
 2. download dependencies
 

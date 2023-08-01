@@ -6,6 +6,8 @@ run:
 
 npm install
 
+all 'findById' change to 'findByPk'
+
 npm start
 
 http://localhost:8000

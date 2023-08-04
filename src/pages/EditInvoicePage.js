@@ -169,6 +169,8 @@ const EditInvoicePage = observer(() => {
     return (
         <React.Fragment>
             <Container className="mt-3" style={{width: "70%", marginBottom: "3%"}}>
+
+            {/* Choose customer */}
             <div className="col">
                 <div className="form-outline" style={{width: "40%"}}>
                     <label className="form-label" htmlFor="form6Example1">Customer</label>
@@ -183,6 +185,8 @@ const EditInvoicePage = observer(() => {
                         </select>
                 </div>
             </div>
+
+            {/* Discount */}
             <div className="col mt-3" style={{width: "15%"}}>
                 <div className="form-outline">
                     <label className="form-label" htmlFor="form6Example2">Discount (%)</label>
@@ -192,6 +196,8 @@ const EditInvoicePage = observer(() => {
                 </div>
             </div>
             <div className="row mt-3">
+
+             {/* Choose product form */}
                 <div className="col">
                     <div className="form-outline"  style={{width: "80%"}}>
                         <label className="form-label" htmlFor="form6Example2">Add Product</label>
@@ -203,9 +209,11 @@ const EditInvoicePage = observer(() => {
                                         {productsNameArr.map(prodName =>
                                             <option key={prodName} value={prodName}>{prodName}</option>
                                         )}
-                                    </select>
+                        </select>
                     </div>
                 </div>
+
+            {/* Add Item button */}
                 <div className="col">
                     <Button style={{marginTop: '8%', marginLeft: '-20%'}} 
                     type="button" variant="btn btn-dark"
@@ -214,6 +222,7 @@ const EditInvoicePage = observer(() => {
                 </div>
             </div>
 
+            {/* Items table */}
             <Table className='mt-4' striped bordered hover size='sm' 
             style={{width: '75%', margin: 'auto', align: 'left', marginLeft: '0%' }}>
                 <thead>
@@ -241,16 +250,19 @@ const EditInvoicePage = observer(() => {
             </Table>
           
             <div className="row mt-3">
+            {/* Total */}
                 <div className="col">
                     <label className="form-label" style={{ marginTop: '8%',fontSize: '22px'}}  
                     htmlFor="form6Example3">Total: {totalVal}</label>
                 </div> 
+                {/* Cancel button */}
                 <div className="col">
                     <Button style={{marginTop: '8%', marginLeft: '-35%'}} 
                     type="button" variant="btn btn-dark"
                     onClick={() => navigate(INVOICES_ROUTE)}
                     >Cancel</Button>
                 </div>
+                {/* Save button */}
                 <div className="col">
                     <Button style={{marginTop: '8%', marginLeft: '-90%'}} 
                     type="button" variant="btn btn-dark"
@@ -258,7 +270,7 @@ const EditInvoicePage = observer(() => {
                     >Save Changes</Button>
                 </div>
             </div>
-        </Container>
+            </Container>
         </React.Fragment>
     )
 })

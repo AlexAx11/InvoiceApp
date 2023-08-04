@@ -12,7 +12,8 @@ export const deleteCustomer = async (id) => {
 
 export const fetchCustomers = async () => {
     const {data} = await $host.get('api/customers')
-    return data
+    console.log('data: ' + data.data[0].name)
+    return data.data
 }
 
 export const fetchOneCustomer = async (id) => {

@@ -62,7 +62,8 @@ const InvoicesPage = observer(() => {
 
 
    const addInvoice = () => {
-        createInvoices({customer_id: getCustomerId(customersArr, customerName),  //take customer id through Name
+        //take customer id through Name
+        createInvoices({customer_id: getCustomerId(customersArr, customerName),  
         discount: discount, total: total})
         //clear all temporary fields
         setDiscount('')

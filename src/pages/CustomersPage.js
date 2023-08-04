@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, forceUpdate} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Table from 'react-bootstrap/Table'
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
@@ -10,7 +10,6 @@ import { Button } from 'react-bootstrap';
 const CustomersPage = observer(() => {
     const {customers} = useContext(Context);
     const [isValid, setValid] = useState(false);
-    const [selector, setSelector] = useState(true)
 
     //remove customer
     const [showDelCus, setShowDelCus] = useState(false);
@@ -44,7 +43,7 @@ const CustomersPage = observer(() => {
 
 
    const addCustomer = () => {
-        createCustomers({id: 1, name: cusName,
+        createCustomers({name: cusName,
         address: address, phone: phone})
         //clear all temporary fields
         setCusName('')
@@ -54,7 +53,6 @@ const CustomersPage = observer(() => {
         setValid(!isValid)
         //reload page
         fetchCustomers().then(data => customers.setCustomers(data))
-        setSelector(!selector)
    }
 
    //save deleting cus data for information page
@@ -71,10 +69,10 @@ const CustomersPage = observer(() => {
         setDelCusName('')
         setDelCusID('')
         setShowDelCus(!showDelCus)
+        //for data updating
         setTimeout(() => {
             fetchCustomers().then(data => customers.setCustomers(data));
-          }, 200);
-        
+        },200)
    }
 
    //check if all fields for new cus are filled in 

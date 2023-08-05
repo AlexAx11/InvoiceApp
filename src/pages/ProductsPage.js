@@ -61,13 +61,14 @@ const ProductsPage = observer(() => {
    }
 
    //delete prod
-   const deleteProductFn = () => {
-        deleteProduct(delProdId)
+   const deleteProductFn = async() => {
+        await deleteProduct(delProdId)
         //clear all temporary fields
         setDelProdName('')
         setShowDelProd(!showDelProd)
-        fetchProducts().then(data => products.setProducts(data))
-        setSelector(!selector)
+        //for data updating
+        const data = await fetchProducts();
+        products.setProducts(data);
    }
 
 

@@ -82,14 +82,14 @@ const InvoicesPage = observer(() => {
    }
 
    //delete invoice
-   const deleteInvoiceFn = () => {
-        deleteInvoice(delInvoiceId)
-        fetchInvoices().then(data => invoices.setInvoices(data))
+   const deleteInvoiceFn = async() => {
+        await deleteInvoice(delInvoiceId)
         //clear all temporary fields
         setDelInvoiceId('')
         setShowDelInvoice(!showDelInvoice)
-        //reload page
-        setSelector(!selector)
+        //for data updating
+        const data = await fetchInvoices();
+        invoices.setInvoices(data);
    } 
     
    const getInvoice = (invoice_id) => {

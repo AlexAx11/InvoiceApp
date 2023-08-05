@@ -63,16 +63,15 @@ const CustomersPage = observer(() => {
    }
 
    //delete cus
-   const deleteCustomerFn = () => {
-        deleteCustomer(delCusId)
+   const deleteCustomerFn = async() => {
+        await deleteCustomer(delCusId)
         //clear all temporary fields
         setDelCusName('')
         setDelCusID('')
         setShowDelCus(!showDelCus)
         //for data updating
-        setTimeout(() => {
-            fetchCustomers().then(data => customers.setCustomers(data));
-        },200)
+        const data = await fetchCustomers();
+        customers.setCustomers(data);
    }
 
    //check if all fields for new cus are filled in 

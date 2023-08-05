@@ -1,13 +1,35 @@
 import {$host} from "./index";
 
-export const createCustomers = async (customers) => {
-    const {data} = await $host.post('api/customers', customers)
-    return data
+export const createCustomers = async (customer) => {
+  try {
+    const response = await $host.post('/api/customers/', customer);
+    const data = response.data;
+    
+    if (data.message === 'success') {
+      return data.data;
+    } else {
+      throw new Error(data.message)
+    }
+  } catch (error) {
+    console.error('Data error:', error);
+    return null;
+  }
 }
 
 export const deleteCustomer = async (id) => {
-    const {data} = await $host.delete('api/customers/' + id)
-    return data
+  try {
+    const response = await $host.delete('api/customers/' + id);
+    const data = response.data;
+    
+    if (data.message === 'success') {
+      return data.data;
+    } else {
+      throw new Error(data.message)
+    }
+  } catch (error) {
+    console.error('Data error:', error);
+    return null;
+  }
 }
 
 export const fetchCustomers = async () => {
@@ -18,16 +40,26 @@ export const fetchCustomers = async () => {
         if (data.message === 'success') {
           return data.data;
         } else {
-          console.error('Data error:', data.message);
-          return [];
+          throw new Error(data.message)
         }
       } catch (error) {
         console.error('Data error:', error);
-        return [];
+        return null;
       }
 }
 
 export const fetchOneCustomer = async (id) => {
-    const {data} = await $host.get('api/customers/' + id)
-    return data
+  try {
+    const response = await $host.get('api/customers/' + id);
+    const data = response.data;
+    
+    if (data.message === 'success') {
+      return data.data;
+    } else {
+      throw new Error(data.message)
+    }
+  } catch (error) {
+    console.error('Data error:', error);
+    return null;
+  }
 }

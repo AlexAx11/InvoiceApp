@@ -42,8 +42,8 @@ const CustomersPage = observer(() => {
     }, [])
 
 
-   const addCustomer = () => {
-        createCustomers({name: cusName,
+   const addCustomer = async() => {
+        await createCustomers({name: cusName,
         address: address, phone: phone})
         //clear all temporary fields
         setCusName('')
@@ -51,8 +51,9 @@ const CustomersPage = observer(() => {
         setPhone('')
         setShow(!show)
         setValid(!isValid)
-        //reload page
-        fetchCustomers().then(data => customers.setCustomers(data))
+        //reload data
+        const data = await fetchCustomers();
+        customers.setCustomers(data)
    }
 
    //save deleting cus data for information page
@@ -102,6 +103,7 @@ const CustomersPage = observer(() => {
                                     onChange={e => {setCusName(e.target.value); checkValid()}}
                                     autoFocus
                                     required
+                                    maxLength={30} 
                                     />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -112,6 +114,7 @@ const CustomersPage = observer(() => {
                                     onChange={e => {setAddress(e.target.value); checkValid()}}
                                     autoFocus
                                     required
+                                    maxLength={50}
                                     />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -122,6 +125,7 @@ const CustomersPage = observer(() => {
                                     onChange={e => {setPhone(e.target.value); checkValid()}}
                                     placeholder='555-555-5555'
                                     required
+                                    maxLength={20}
                                     />
                             </Form.Group>
                         </Form>

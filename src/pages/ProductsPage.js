@@ -11,7 +11,6 @@ import { createProduct, deleteProduct } from 'Http/productsAPI';
 const ProductsPage = observer(() => {
     const {products} = useContext(Context);
     const [isValid, setValid] = useState(false);
-    const [selector, setSelector] = useState(true)
 
     //remove product
     const [showDelProd, setShowDelProd] = useState(false);
@@ -39,18 +38,19 @@ const ProductsPage = observer(() => {
 
     useEffect(() => {
         fetchProducts().then(data => products.setProducts(data))
-    }, [selector])
+    }, [])
 
 
-   const addProduct = () => {
-        createProduct({name: price, price: price})
+   const addProduct = async() => {
+        await createProduct({name: price, price: price})
         //clear all temporary fields
         setPrice('')
         setName('')
         setShow(!show)
         setValid(!isValid)
-        //reload page
-        setSelector(!selector)
+        //reload data
+        const data = await fetchProducts()
+        products.setProducts(data)
    }
 
    //save deleting prod data for information page
@@ -94,6 +94,7 @@ const ProductsPage = observer(() => {
                                     value={name}
                                     onChange={e => {setName(e.target.value)}}
                                     required
+                                    maxLength={30}
                                     />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -104,6 +105,7 @@ const ProductsPage = observer(() => {
                                     value={price}
                                     onChange={e => {setPrice(e.target.value)}}
                                     required
+                                    maxLength={10}
                                     />
                             </Form.Group>
                         </Form>

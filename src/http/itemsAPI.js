@@ -16,8 +16,20 @@ export const deleteItem = async (id) => {
 }
 
 export const fetchItems = async (invoice_id) => {
-    const {data} = await $host.get('/api/invoices' + '/' + invoice_id + '/' + 'items')
-    return data
+    try {
+        const response = await $host.get('/api/invoices' + '/' + invoice_id + '/' + 'items');
+        const data = response.data;
+        
+        if (data.message === 'success') {
+          return data.data;
+        } else {
+          console.error('Data error:', data.message);
+          return [];
+        }
+      } catch (error) {
+        console.error('Data error:', error);
+        return [];
+      }
 }
 
 export const fetchOneInvoice = async (id) => {

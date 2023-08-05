@@ -57,7 +57,8 @@ const InvoicesPage = observer(() => {
     
     useEffect(() => {
         fetchInvoices().then(data => invoices.setInvoices(data))
-        fetchCustomers().then(data => customers.setCustomers(data))
+        fetchCustomers().then(data => {customers.setCustomers(data)
+        })
     }, [selector])
 
 

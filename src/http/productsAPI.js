@@ -11,8 +11,20 @@ export const deleteProduct = async (id) => {
 }
 
 export const fetchProducts = async () => {
-    const {data} = await $host.get('/api/products')
-    return data
+    try {
+        const response = await $host.get('/api/products');
+        const data = response.data;
+        
+        if (data.message === 'success') {
+          return data.data;
+        } else {
+          console.error('Data error:', data.message);
+          return [];
+        }
+      } catch (error) {
+        console.error('Data error:', error);
+        return [];
+      }
 }
 
 export const fetchOneProduct = async (id) => {

@@ -11,9 +11,20 @@ export const deleteCustomer = async (id) => {
 }
 
 export const fetchCustomers = async () => {
-    const {data} = await $host.get('api/customers')
-    console.log('data: ' + data.data[0].name)
-    return data.data
+    try {
+        const response = await $host.get('api/customers');
+        const data = response.data;
+        
+        if (data.message === 'success') {
+          return data.data;
+        } else {
+          console.error('Data error:', data.message);
+          return [];
+        }
+      } catch (error) {
+        console.error('Data error:', error);
+        return [];
+      }
 }
 
 export const fetchOneCustomer = async (id) => {

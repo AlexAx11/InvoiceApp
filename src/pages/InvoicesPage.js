@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 const InvoicesPage = observer(() => {
     const {customers} = useContext(Context);
     const {invoices} = useContext(Context);
+
     const customersArr = customers._customers;
     const cusNamesArr = getCusNames(customersArr);
     const invoicesArr = invoices._invoices;
@@ -24,30 +25,28 @@ const InvoicesPage = observer(() => {
             }
         ))
 
-    const [isValid, setValid] = useState(+false);
-    const [selector, setSelector] = useState(+true)
+    const [isValid, setValid] = useState(false);
 
     //to delete invoice
     const [delInvoiceId, setDelInvoiceId] = useState(0);
-    const [showDelInvoice, setShowDelInvoice] = useState(+false);
+    const [showDelInvoice, setShowDelInvoice] = useState(false);
     const handleShowDelete = () => {
         setShowDelInvoice(+true);
     }
  
     //for new invoice
-    const [show, setShow] = useState(+false);
-    const handleShow = () => setShow(+true);
+    const [show, setShow] = useState(false);
+    const handleShow = () => setShow(true);
     const [customerName, setCustomerName] = useState('');
     const [discount, setDiscount] = useState('');
     const [total, setTotal] = useState(0);
-
     const navigate = useNavigate()
 
     //close form for new invoice after creating or when pressed Cancel button
     const handleClose = () => {
         setDiscount(0)
         setTotal(0)
-        setShow(+false);
+        setShow(false);
     }
 
     //close form for delete invoice after deleting or when pressed Cancel button
@@ -59,20 +58,21 @@ const InvoicesPage = observer(() => {
         fetchInvoices().then(data => invoices.setInvoices(data))
         fetchCustomers().then(data => {customers.setCustomers(data)
         })
-    }, [selector])
+    }, [])
 
 
-   const addInvoice = () => {
-        //take customer id through Name
-        createInvoices({customer_id: getCustomerId(customersArr, customerName),  
+   const addInvoice = async() => {
+        //take customer id through Name, creatr invoice
+        await createInvoices({customer_id: getCustomerId(customersArr, customerName),  
         discount: discount, total: total})
         //clear all temporary fields
         setDiscount('')
         setTotal(0)
         setShow(!show)
         setValid(!isValid)
-        //reload page
-        setSelector(!selector)
+        //reload data
+        const data = await fetchInvoices()
+        invoices.setInvoices(data)
    }
 
    //save deleting invoice data for information page
@@ -92,9 +92,7 @@ const InvoicesPage = observer(() => {
         invoices.setInvoices(data);
    } 
     
-   const getInvoice = (invoice_id) => {
-    return invoicesArr.find(inv => inv.id === invoice_id)
-   }
+
     return (
         <React.Fragment>
 
@@ -132,6 +130,7 @@ const InvoicesPage = observer(() => {
                                     autoFocus
                                     placeholder='1.1'
                                     required
+                                    maxLength={10}
                                     />
                             </Form.Group>
                         </Form>

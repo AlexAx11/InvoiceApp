@@ -29,10 +29,10 @@ export const fetchInvoices = async () => {
 
 export const fetchOneInvoice = async (id) => {
     const {data} = await $host.get('/api/invoices/' + id)
-    return data
+    return data.data
 }
 
 export const putOneInvoice = async (id, invoice) => {
-    const {data} = await $host.put('/api/invoices/' + id, invoice)
-    return data
+    const {data} = await $host.patch('/api/invoices/' + id, invoice)
+    return data.data
 }

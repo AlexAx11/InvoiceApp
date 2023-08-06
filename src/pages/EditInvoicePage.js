@@ -38,8 +38,8 @@ const EditInvoicePage = observer(() => {
             const invoiceId = match[1];
             fetchItems(invoiceId).then(data => items.setItems(data))
             fetchProducts().then(data => products.setProducts(data))
-            fetchInvoices().then(data => invoices.setInvoices(data))
             fetchCustomers().then(data => customers.setCustomers(data))
+            fetchInvoices().then(data => invoices.setInvoices(data))
             //find and save invoice
             const invoice = invoicesArr.find(inv => inv.id == invoiceId)
             setInvoice(invoice);
@@ -87,19 +87,16 @@ const EditInvoicePage = observer(() => {
     }
 
     //saving changes and return to Invoices page
-    function changeInvoce() {
+    async function changeInvoce() {
         const newItemsArr = invoiceItems.filter(i => i.temporary_id);
-        const changedItemArr = invoiceItems.filter(i => i.id);
         const newInvoice = {id: invoice.id, customer_id: getCustomerId(),
             discount: discount, total: totalVal}
         newItemsArr.forEach(item => {
             createItem(invoice.id, item)
         })
-        changedItemArr.forEach(item => {
-            putItem(invoice.id, item.id, item)
-        })
         putOneInvoice(invoice.id, newInvoice)
-        fetchInvoices().then(data => invoices.setInvoices(data))
+        const data = await fetchInvoices()
+        invoices.setInvoices(data)
         navigate(INVOICES_ROUTE)
     }
 
@@ -192,7 +189,9 @@ const EditInvoicePage = observer(() => {
                     <label className="form-label" htmlFor="form6Example2">Discount (%)</label>
                     <input type="number" min="0" id="form6Example2" className="form-control" 
                     onChange={e => {setDiscount(e.target.value); recountTotal(e.target.value)}}
-                    value={discount}/>
+                    value={discount}
+                    maxLength={10}
+                    />
                 </div>
             </div>
             <div className="row mt-3">

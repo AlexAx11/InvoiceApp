@@ -42,7 +42,7 @@ const ProductsPage = observer(() => {
 
 
    const addProduct = async() => {
-        await createProduct({name: price, price: price})
+        await createProduct({name: name, price: price})
         //clear all temporary fields
         setPrice('')
         setName('')

@@ -10,6 +10,7 @@ const CustomersPage = observer(() => {
   const { customers } = useContext(Context);
   const [isValid, setValid] = useState(false);
   const [cusArray, setCusArray] = useState([]);
+  const [loadingError, setLoadingError] = useState(null);
 
   //remove customer
   const [showDelCus, setShowDelCus] = useState(false);
@@ -45,8 +46,8 @@ const CustomersPage = observer(() => {
       .then((data) => {
         setCusArray(data.data);
       })
-      .catch((error) => {
-        console.error("Error fetching customers:", error);
+      .catch((e) => {
+        setLoadingError(e);
       });
 
     return () => {

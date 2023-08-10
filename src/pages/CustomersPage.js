@@ -2,11 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { observer } from "mobx-react-lite";
 import { Context } from "../index";
-import {
-  createCustomers,
-  fetchCustomers,
-  deleteCustomer,
-} from "Http/customerAPI";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
@@ -14,19 +9,22 @@ import { Button } from "react-bootstrap";
 const CustomersPage = observer(() => {
   const { customers } = useContext(Context);
   const [isValid, setValid] = useState(false);
+  const [cusArray, setCusArray] = useState([]);
 
   //remove customer
   const [showDelCus, setShowDelCus] = useState(false);
-  const handleShowDelete = () => setShowDelCus(true);
   const [delCusName, setDelCusName] = useState("");
   const [delCusId, setDelCusID] = useState(0);
 
   //add customer
   const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
   const [cusName, setCusName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
+
+  //Handlers
+  const handleShowDelete = () => setShowDelCus(true);
+  const handleShow = () => setShow(true);
 
   //close form for new cus after creating or when pressed Cancel button
   const handleClose = () => {
@@ -42,11 +40,26 @@ const CustomersPage = observer(() => {
   };
 
   useEffect(() => {
-    fetchCustomers().then((data) => customers.setCustomers(data));
+    customers
+      .fetchCustomers()
+      .then((data) => {
+        setCusArray(data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching customers:", error);
+      });
+
+    return () => {
+      clearData();
+    };
   }, []);
 
   const addCustomer = async () => {
-    await createCustomers({ name: cusName, address: address, phone: phone });
+    await customers.createCustomer({
+      name: cusName,
+      address: address,
+      phone: phone,
+    });
     //clear all temporary fields
     setCusName("");
     setAddress("");
@@ -54,12 +67,12 @@ const CustomersPage = observer(() => {
     setShow(!show);
     setValid(!isValid);
     //reload data
-    const data = await fetchCustomers();
-    customers.setCustomers(data);
+    updateCusArr();
   };
 
   //save deleting cus data for information page
-  const removeCustomer = (cus) => {
+  const removeCustomer = (event, cus) => {
+    event.preventDefault();
     setDelCusName(cus.name);
     setDelCusID(cus.id);
     handleShowDelete();
@@ -67,20 +80,60 @@ const CustomersPage = observer(() => {
 
   //delete cus
   const deleteCustomerFn = async () => {
-    await deleteCustomer(delCusId);
+    await customers.deleteCustomer(delCusId);
     //clear all temporary fields
     setDelCusName("");
     setDelCusID("");
     setShowDelCus(!showDelCus);
     //for data updating
-    const data = await fetchCustomers();
-    customers.setCustomers(data);
+    updateCusArr();
   };
 
   //check if all fields for new cus are filled in
   const checkValid = () => {
     if (cusName && address && phone !== "") setValid(true);
   };
+
+  function updateCusArr() {
+    customers
+      .fetchCustomers()
+      .then((data) => {
+        setCusArray(data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching customers:", error);
+      });
+  }
+
+  const changeData = (event, dataName) => {
+    switch (dataName) {
+      case "address":
+        setAddress(event.target.value);
+        break;
+      case "name":
+        setCusName(event.target.value);
+        break;
+      case "phone":
+        setPhone(event.target.value);
+        break;
+      default:
+        console.warn(`Unknown input type: ${dataName}`);
+        break;
+    }
+    checkValid();
+  };
+
+  function clearData() {
+    setCusName("");
+    setAddress("");
+    setPhone("");
+    setDelCusName("");
+    setDelCusID("");
+    setValid(false);
+    setCusArray([]);
+    setShowDelCus(false);
+    setShow(false);
+  }
 
   return (
     <React.Fragment>
@@ -89,7 +142,7 @@ const CustomersPage = observer(() => {
         <Button
           type="button"
           variant="btn btn-dark"
-          onClick={() => handleShow()}
+          onClick={handleShow}
           style={{ marginTop: "10px", marginLeft: "15%" }}
         >
           Add Customer
@@ -109,8 +162,7 @@ const CustomersPage = observer(() => {
                   type="text"
                   value={cusName}
                   onChange={(e) => {
-                    setCusName(e.target.value);
-                    checkValid();
+                    changeData(e, "name");
                   }}
                   autoFocus
                   required
@@ -126,8 +178,7 @@ const CustomersPage = observer(() => {
                   type="text"
                   value={address}
                   onChange={(e) => {
-                    setAddress(e.target.value);
-                    checkValid();
+                    changeData(e, "address");
                   }}
                   autoFocus
                   required
@@ -143,8 +194,7 @@ const CustomersPage = observer(() => {
                   type="text"
                   value={phone}
                   onChange={(e) => {
-                    setPhone(e.target.value);
-                    checkValid();
+                    changeData(e, "phone");
                   }}
                   placeholder="555-555-5555"
                   required
@@ -154,7 +204,7 @@ const CustomersPage = observer(() => {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="btn btn-secondary" onClick={() => handleClose()}>
+            <Button variant="btn btn-secondary" onClick={handleClose}>
               Close
             </Button>
             <Button
@@ -187,7 +237,7 @@ const CustomersPage = observer(() => {
           </tr>
         </thead>
         <tbody>
-          {customers._customers.map((cus) => (
+          {cusArray.map((cus) => (
             <tr key={cus.id}>
               <td>{cus.id}</td>
               <td>{cus.name}</td>
@@ -197,8 +247,8 @@ const CustomersPage = observer(() => {
                 <Button
                   variant="btn btn-dark"
                   size="sm"
-                  onClick={() => {
-                    removeCustomer(cus);
+                  onClick={(e) => {
+                    removeCustomer(e, cus);
                   }}
                 >
                   Delete

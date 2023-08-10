@@ -31,7 +31,7 @@ const InvoicesPage = observer(() => {
   const [delInvoiceId, setDelInvoiceId] = useState(0);
   const [showDelInvoice, setShowDelInvoice] = useState(false);
   const handleShowDelete = () => {
-    setShowDelInvoice(+true);
+    setShowDelInvoice(true);
   };
 
   //for new invoice
@@ -51,7 +51,7 @@ const InvoicesPage = observer(() => {
 
   //close form for delete invoice after deleting or when pressed Cancel button
   const handleCloseDelete = () => {
-    setShowDelInvoice(+false);
+    setShowDelInvoice(false);
   };
 
   useEffect(() => {

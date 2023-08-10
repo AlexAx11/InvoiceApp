@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { HTTP } from 'Http/const'
+import axios from "axios";
+import { HTTP } from "Http/const";
 
 const $host = axios.create({
-    baseURL: HTTP
-})
+  baseURL: HTTP,
+});
 
-export {$host}
+export { $host };

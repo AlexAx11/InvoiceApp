@@ -1,17 +1,17 @@
 import { makeAutoObservable } from "mobx"; //control obj and render it if it changed
 
 export default class CustomerStore {
-    constructor() {
-        this._customers = []
-        
-        makeAutoObservable(this)
-    }
+  constructor() {
+    this._customers = [];
 
-    setCustomers(customers) {
-        this._customers = customers
-    }
+    makeAutoObservable(this);
+  }
 
-    getCustomers() {
-        return this._customers
-    }
+  setCustomers(customers) {
+    this._customers = customers;
+  }
+
+  getCustomers() {
+    return this._customers;
+  }
 }

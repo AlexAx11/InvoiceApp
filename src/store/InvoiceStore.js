@@ -1,17 +1,17 @@
 import { makeAutoObservable } from "mobx";
 
 export default class InvoiceStore {
-    constructor() {
-        this._invoices = []
-        
-        makeAutoObservable(this)
-    }
+  constructor() {
+    this._invoices = [];
 
-    setInvoices(invoices) {
-        this._invoices = invoices
-    }
+    makeAutoObservable(this);
+  }
 
-    getInvoices() {
-        return this._invoices
-    }
+  setInvoices(invoices) {
+    this._invoices = invoices;
+  }
+
+  getInvoices() {
+    return this._invoices;
+  }
 }
